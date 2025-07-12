@@ -1,0 +1,9 @@
+name: Autosit
+version: '${project.version}'
+main: org.gldhn.autosit.Autosit
+api-version: '1.16'
+depend: [GSit]
+commands:
+  asit:
+    usage: /<command> [add/remove/autosit] [Location]
+    description: 'Autosit 主命令'
