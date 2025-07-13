@@ -1,7 +1,7 @@
 name: Autosit
 version: '${project.version}'
 main: org.gldhn.autosit.Autosit
-api-version: '1.16'
+api-version: '1.17'
 depend: [GSit]
 commands:
   asit:
