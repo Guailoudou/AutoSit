@@ -37,39 +37,67 @@ public class AsitCommand implements CommandExecutor {
                 if(strings.length==1 && strings[0].equals("autosit"))return autosit(player);
                 if(strings.length==1 && strings[0].equals("list"))return allList(player);
                 if(strings.length==1 && strings[0].equals("lookblock"))return lookBlock(player);
+                if(strings.length==1 && strings[0].equals("save"))return save(player);
+                if(strings.length==1 && strings[0].equals("reload"))return reload(player);
+                if(strings.length==1 && strings[0].equals("help"))return help(player);
                 if(strings.length==1 && strings[0].equals("clear")){
                     autosit.getSitblockservice().clearBlockLocations();
-                    player.sendMessage("已清空所有位置");
+                    player.sendMessage("§a已清空所有位置");
                     return true;
                 }
                 //GSitAPI.createSeat(block, player);
 
-            }else player.sendMessage("你无权使用这个命令");
-        }else Bukkit.getLogger().warning("你不能在控制台使用这个命令");
+            }else player.sendMessage("§4你无权使用这个命令");
+        }else Bukkit.getLogger().warning("§4你不能在控制台使用这个命令");
 
         return false;
     }
 
+    private boolean help(Player player) {
+        player.sendMessage("§e/asit add <x> <y> <z> §7添加一个位置");
+        player.sendMessage("§e/asit adds <x1> <y1> <z1> <x2> <y2> <z2> §7添加一个范围");
+        player.sendMessage("§e/asit remove <x> <y> <z> §7删除一个位置");
+        player.sendMessage("§e/asit autosit §7自动排位（需要先设置座位和中心）");
+        player.sendMessage("§e/asit lookblock §7查看座位（绿色为座位，橙色为中心）");
+        player.sendMessage("§e/asit setCenterPoint <x> <y> <z> §7设置中心点");
+        player.sendMessage("§e/asit list §7列出所有位置");
+        player.sendMessage("§e/asit clear §7清空所有位置");
+        player.sendMessage("§e/asit reload §7重载配置文件");
+        player.sendMessage("§e/asit help §7查看帮助");
+        return true;
+    }
+
+    private boolean save(Player player) {
+        autosit.getSitblockservice().save();
+        player.sendMessage("§a保存成功");
+        return true;
+    }
+    private boolean reload(Player player) {
+//        autosit.reloadConfig();
+        autosit.reloadYmlFile();
+        player.sendMessage("§a重载成功");
+        return true;
+    }
     private boolean lookBlock(Player player) {
         if(autosit.getTickService().getLookBlockTick()){
             autosit.getTickService().setLookBlockTick(false, player);
-            player.sendMessage("已关闭显示方块");
+            player.sendMessage("§a已关闭显示方块");
         }else {
             autosit.getTickService().setLookBlockTick(true, player);
-            player.sendMessage("已开启显示方块");
+            player.sendMessage("§a已开启显示方块");
         }
         return true;
     }
 
     private boolean allList(Player player) {
-        AtomicReference<String> Message = new AtomicReference<>("所有位置：");
+        AtomicReference<String> Message = new AtomicReference<>("§a所有位置：");
         autosit.getSitblockservice().getBlockLocations().forEach(location -> {
-            Message.set(Message + "X:" + location.getX() + " Y:" + location.getY() + " Z:" + location.getZ());
+            Message.set(Message + "|" + location.getX() + "," + location.getY() + "," + location.getZ());
         });
         player.sendMessage(Message.get());
         if(autosit.getSitblockservice().getCenterPoint()==null){
-            player.sendMessage("未设置中心点");
-        }else player.sendMessage("中心点：X:" + autosit.getSitblockservice().getCenterPoint().getX() + " Y:" + autosit.getSitblockservice().getCenterPoint().getY() + " Z:" + autosit.getSitblockservice().getCenterPoint().getZ());
+            player.sendMessage("§6未设置中心点");
+        }else player.sendMessage("§a中心点：X:" + autosit.getSitblockservice().getCenterPoint().getX() + " Y:" + autosit.getSitblockservice().getCenterPoint().getY() + " Z:" + autosit.getSitblockservice().getCenterPoint().getZ());
         return true;
     }
 
@@ -118,9 +146,10 @@ public class AsitCommand implements CommandExecutor {
                 while(location.getBlock().getType().isAir()||location.getBlock().getType()==Material.LIGHT){
                     location.setY(location.getY()-1);
                 }
-                if(Tag.STAIRS.isTagged(location.getBlock().getType()))
-                    GSitAPI.createSeat(location.getBlock(), player, true,0,-0.5,0, 0,true);
-                else GSitAPI.createSeat(location.getBlock(), player);
+//                if(Tag.STAIRS.isTagged(location.getBlock().getType()))
+//                    GSitAPI.createSeat(location.getBlock(), player, true,0,-0.5,0, 0,true);
+//                else
+                    GSitAPI.createSeat(location.getBlock(), player);
                 locations.remove(0);
                 sitblocklength = sitblocklength - 1;
             }else {

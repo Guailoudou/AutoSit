@@ -31,6 +31,9 @@ public class AsitTabComplete implements TabCompleter {
             complete.add("list");
             complete.add("clear");
             complete.add("lookblock");
+            complete.add("save");
+            complete.add("reload");
+            complete.add("help");
         }
         if (strings.length == 2){
             if(strings[0].equals("add")||strings[0].equals("adds")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))

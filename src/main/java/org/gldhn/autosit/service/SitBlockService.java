@@ -75,4 +75,10 @@ public class SitBlockService {
             return Math.sqrt((x-centerPoint.getX()) * (x-centerPoint.getX()) + (y-centerPoint.getY()) * (y-centerPoint.getY()) + (z-centerPoint.getZ()) * (z-centerPoint.getZ()));
         }));
     }
+
+    public void save() {
+        autosit.getYmaldata().set("blocklocations", blockLocations);
+        autosit.getYmaldata().set("centerpoint", centerPoint);
+        autosit.saveYmaldata();
+    }
 }
