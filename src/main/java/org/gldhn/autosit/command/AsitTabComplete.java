@@ -24,7 +24,7 @@ public class AsitTabComplete implements TabCompleter {
         if(strings.length == 1)
         {
             complete.add("add");
-            complete.add("adds");
+//            complete.add("adds");
             complete.add("remove");
             complete.add("autosit");
             complete.add("setCenterPoint");
@@ -36,29 +36,29 @@ public class AsitTabComplete implements TabCompleter {
             complete.add("help");
         }
         if (strings.length == 2){
-            if(strings[0].equals("add")||strings[0].equals("adds")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
+            if(strings[0].equals("add")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
                 complete.add(String.valueOf((int)player.getLocation().getX()));
         }
         if (strings.length == 3){
-            if(strings[0].equals("add")||strings[0].equals("adds")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
+            if(strings[0].equals("add")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
                 complete.add(String.valueOf((int)player.getLocation().getY()));
         }
         if (strings.length == 4){
-            if(strings[0].equals("add")||strings[0].equals("adds")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
+            if(strings[0].equals("add")||strings[0].equals("remove")||strings[0].equals("setCenterPoint"))
                 complete.add(String.valueOf((int)player.getLocation().getZ()));
         }
         if(strings.length == 5){
-            if(strings[0].equals("adds")){
+            if(strings[0].equals("add")){
                 complete.add(String.valueOf((int)player.getLocation().getX()));
             }
         }
         if(strings.length == 6){
-            if(strings[0].equals("adds")){
+            if(strings[0].equals("add")){
                 complete.add(String.valueOf((int)player.getLocation().getY()));
             }
         }
         if(strings.length == 7){
-            if(strings[0].equals("adds")){
+            if(strings[0].equals("add")){
                 complete.add(String.valueOf((int)player.getLocation().getZ()));
             }
         }
