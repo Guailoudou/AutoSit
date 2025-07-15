@@ -126,6 +126,10 @@ public class AsitCommand implements CommandExecutor {
             autosit.getSitblockservice().removeBlockLocation(Double.parseDouble(strings[1]), Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
             player.sendMessage("§a删除" + strings[1] + "," + strings[2] + "," + strings[3] + "成功");
         }
+        if(strings.length == 7){
+            autosit.getSitblockservice().removeBlockLocations(Double.parseDouble(strings[1]), Double.parseDouble(strings[2]), Double.parseDouble(strings[3]), Double.parseDouble(strings[4]), Double.parseDouble(strings[5]), Double.parseDouble(strings[6]));
+            player.sendMessage("§a删除成功");
+        }
         player.sendMessage("§a请编辑完后记得使用 /asit save 保存");
         return true;
     }

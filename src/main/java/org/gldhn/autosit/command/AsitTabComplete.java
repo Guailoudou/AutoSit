@@ -48,17 +48,17 @@ public class AsitTabComplete implements TabCompleter {
                 complete.add(String.valueOf((int)player.getLocation().getZ()));
         }
         if(strings.length == 5){
-            if(strings[0].equals("add")){
+            if(strings[0].equals("add") || strings[0].equals("remove")){
                 complete.add(String.valueOf((int)player.getLocation().getX()));
             }
         }
         if(strings.length == 6){
-            if(strings[0].equals("add")){
+            if(strings[0].equals("add") || strings[0].equals("remove")){
                 complete.add(String.valueOf((int)player.getLocation().getY()));
             }
         }
         if(strings.length == 7){
-            if(strings[0].equals("add")){
+            if(strings[0].equals("add") || strings[0].equals("remove")){
                 complete.add(String.valueOf((int)player.getLocation().getZ()));
             }
         }
