@@ -35,17 +35,13 @@ public class AsitCommand implements CommandExecutor {
                 if(strings.length==4 && strings[0].equals("setCenterPoint"))return setCenterPoint(strings,player);
                 if(strings[0].equals("remove"))return removeLocation(strings,player);
                 //if(strings[0].equals("adds"))return addLocation(strings,player);
+                if(strings[0].equals("noSit"))return NoSitPlayer(strings,player);
                 if(strings.length==1 && strings[0].equals("autosit"))return autosit(player);
                 if(strings.length==1 && strings[0].equals("list"))return allList(player);
                 if(strings.length==1 && strings[0].equals("lookblock"))return lookBlock(player);
                 if(strings.length==1 && strings[0].equals("save"))return save(player);
                 if(strings.length==1 && strings[0].equals("reload"))return reload(player);
                 if(strings.length==1 && strings[0].equals("help"))return help(player);
-                if(strings.length==1 && strings[0].equals("clear")){
-                    autosit.getSitblockservice().clearBlockLocations();
-                    player.sendMessage("§a已清空所有位置");
-                    return true;
-                }
                 //GSitAPI.createSeat(block, player);
 
             }else player.sendMessage("§4你无权使用这个命令");
@@ -54,16 +50,55 @@ public class AsitCommand implements CommandExecutor {
         return false;
     }
 
+    private boolean NoSitPlayer(String[] strings, Player player) {
+        if(strings.length==4 && strings[2].equals("add")){
+            Player target = Bukkit.getPlayer(strings[3]);
+            if(target==null){
+                player.sendMessage("§4玩家不存在");
+                return true;
+            }
+            autosit.getSitblockservice().addNoSitPlayer(target);
+            player.sendMessage("§a已添加玩家"+target.getName()+"到无需座位名单");
+        }else if(strings.length==4 && strings[2].equals("remove")){
+            Player target = Bukkit.getPlayer(strings[3]);
+            if(target==null){
+                player.sendMessage("§4玩家不存在");
+                return true;
+            }
+            autosit.getSitblockservice().removeNoSitPlayer(target);
+            player.sendMessage("§a已删除玩家"+target.getName()+"于无需座位名单");
+        }else if(strings.length==3){
+            if(strings[2].equals("add")){
+                autosit.getSitblockservice().addNoSitPlayer(player);
+                player.sendMessage("§a已添加玩家"+player.getName()+"到无需座位名单");
+            }
+            if(strings[2].equals("remove")){
+                autosit.getSitblockservice().removeNoSitPlayer(player);
+                player.sendMessage("§a已删除玩家"+player.getName()+"于无需座位名单");
+            }
+
+        }else {
+            return false;
+        }
+
+        return true;
+    }
+
     private boolean help(Player player) {
-        player.sendMessage("§e/asit add <x> <y> <z> §7添加一个位置");
-        player.sendMessage("§e/asit add <x1> <y1> <z1> <x2> <y2> <z2> §7添加一个范围");
-        player.sendMessage("§e/asit remove <x> <y> <z> §7删除一个位置");
+        player.sendMessage("§e/asit <add/remove> <x> <y> <z> §7添加或删除一个位置");
+        player.sendMessage("§e/asit <add/remove> <x1> <y1> <z1> <x2> <y2> <z2> §7添加或删除一个范围");
+//        player.sendMessage("§e/asit remove <x> <y> <z> §7删除一个位置");
+//        player.sendMessage("§e/asit remove <x1> <y1> <z1> <x2> <y2> <z2> §7删除一个范围");
+        player.sendMessage("§e/asit remove all §7清空所有位置");
         player.sendMessage("§e/asit autosit §7自动排位（需要先设置座位和中心）");
         player.sendMessage("§e/asit lookblock §7查看座位（绿色为座位，橙色为中心）使用铁锹左右选点，左点为红，右点为蓝色");
         player.sendMessage("§e/asit setCenterPoint <x> <y> <z> §7设置中心点");
+        player.sendMessage("§e/asit noSit <add/remove> <玩家名> §7添加或移除玩家至无需座位名单");
+//        player.sendMessage("§e/asit noSit remove <玩家名> §7删除玩家至无需座位名单");
+        player.sendMessage("§e/asit noSit <add/remove> §7添加或移除自己至无需座位名单");
         player.sendMessage("§e/asit save §7保存座位配置文件");
         player.sendMessage("§e/asit list §7列出所有位置");
-        player.sendMessage("§e/asit clear §7清空所有位置");
+//        player.sendMessage("§e/asit clear §7清空所有位置");
         player.sendMessage("§e/asit reload §7重载配置文件");
         player.sendMessage("§e/asit help §7查看帮助");
         return true;
@@ -122,6 +157,10 @@ public class AsitCommand implements CommandExecutor {
             autosit.getItemListener().getLeftLocation().remove(player.getUniqueId());
             autosit.getItemListener().getRightLocation().remove(player.getUniqueId());
         }
+        if(strings.length == 2 && strings[1].equals("all")){
+            autosit.getSitblockservice().clearBlockLocations();
+            player.sendMessage("§a已成功删除全部座位");
+        }
         if (strings.length == 4){
             autosit.getSitblockservice().removeBlockLocation(Double.parseDouble(strings[1]), Double.parseDouble(strings[2]), Double.parseDouble(strings[3]));
             player.sendMessage("§a删除" + strings[1] + "," + strings[2] + "," + strings[3] + "成功");
@@ -176,6 +215,7 @@ public class AsitCommand implements CommandExecutor {
 //        List<Location> locations = autosit.getSitblockservice().getBlockLocations();
 //        Bukkit.getLogger().info(locations.toString());
         for(Player player:onlinePlayers){
+            if(autosit.getSitblockservice().getNositPlayers().contains(player))continue;
             if(sitblocklength>0){
                 Location location = locations.get(0);
                 location.setWorld(sender.getWorld());

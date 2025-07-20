@@ -5,5 +5,5 @@ api-version: '1.17'
 depend: [GSit]
 commands:
   asit:
-    usage: /<command> [add/remove/autosit] [Location]
+    usage: 请输入 /asit help 查看帮助
     description: 'Autosit 主命令'

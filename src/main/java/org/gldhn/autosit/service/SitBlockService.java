@@ -1,6 +1,7 @@
 package org.gldhn.autosit.service;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.gldhn.autosit.Autosit;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class SitBlockService {
     private final Autosit autosit;
     private Location centerPoint;
     private boolean needSort = false;
+    private List<Player> nositPlayers = new ArrayList<>();
     public SitBlockService(Autosit autosit) {
         this.autosit = autosit;
     }
@@ -107,7 +109,18 @@ public class SitBlockService {
     public void save() {
         autosit.getDataYmlService().getYmaldata().set("blocklocations", blockLocations);
         autosit.getDataYmlService().getYmaldata().set("centerpoint", centerPoint);
+        autosit.getDataYmlService().getYmaldata().set("nositplayers", nositPlayers);
         autosit.getDataYmlService().saveYmaldata();
+    }
+    public void addNoSitPlayer(Player player) {
+        nositPlayers.add(player);
+    }
+    public void removeNoSitPlayer(Player player) {
+        nositPlayers.remove(player);
+    }
+
+    public List<Player> getNositPlayers() {
+        return nositPlayers;
     }
 
     public boolean isNeedSort() {

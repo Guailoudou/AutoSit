@@ -2,6 +2,7 @@ package org.gldhn.autosit.service;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.gldhn.autosit.Autosit;
 
 import java.io.File;
@@ -40,5 +41,6 @@ public class dataYmlService {
         ymaldata = YamlConfiguration.loadConfiguration(ymlFile);
         autosit.getSitblockservice().setCenterPoint(ymaldata.getLocation("centerpoint"));
         autosit.getSitblockservice().setBlockLocations((List<Location>) ymaldata.getList("blocklocations", new ArrayList<>()));
+        autosit.getSitblockservice().getNositPlayers().addAll((List<Player>)ymaldata.getList("nositplayers", new ArrayList<>()));
     }
 }
